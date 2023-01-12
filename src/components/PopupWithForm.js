@@ -9,6 +9,7 @@ export default function PopupWithForm(props) {
           <form className="popup__form" name={props.name} novalidate>
             <fieldset className="popup__data">
               {props.children}
+              <button className="popup__button" type="submit">{props.buttonText}</button>
             </fieldset>
           </form>
         </div>

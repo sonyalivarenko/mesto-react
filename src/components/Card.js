@@ -8,7 +8,7 @@ export default function Card(props) {
 
   return (
     <div className="photo__item">
-      <img className="photo__img" style={{ backgroundImage: `url(${props.link})` }} onClick={handleClick} />
+      <img className="photo__img" src={props.link} onClick={handleClick} />
       <button className="photo__button-delete"></button>
       <div className="photo__text">
         <h2 className="photo__name">{props.name}</h2>
