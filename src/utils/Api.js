@@ -23,6 +23,21 @@ class Api {
       });
   }
 
+//загрузка информации о пользователе на сервер
+  setProfileInfo({name, about}) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        about
+      })
+    })
+      .then(res => {
+        return this._getResponseData(res);
+      });
+  }
+
   // загрузка всех карточек с сервера
   getInitialCards() {
       return fetch(`${this._baseUrl}/cards`, {
@@ -54,7 +69,7 @@ class Api {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
-        name: cardInfo.name,
+        name: cardInfo.title,
         link: cardInfo.link
       })
     })
@@ -75,7 +90,7 @@ class Api {
   }
 
   // отправка лайка на сервер
-   likeCard(cardId) {
+   _likeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: this._headers
@@ -86,7 +101,7 @@ class Api {
   }
  
   // удаление лайка с сервера
-  deleteLike(cardId) {
+  _deleteLike(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: this._headers
@@ -97,18 +112,28 @@ class Api {
   }
 
   // загрузка нового аватара на сервер
-  getNewAvatar(avatarLink) {
+  getNewAvatar(link) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        avatar: avatarLink.avatar
+        avatar: link,
       })
     })
       .then(res => {
         return this._getResponseData(res);
       });
   }
+
+// изменение статуса "лайка" карточки
+changeLikeCardStatus(cardId, isNotLiked) {
+  if (isNotLiked) {
+    return this._likeCard(cardId);
+  }
+  else {
+    return this._deleteLike(cardId);
+  }
+}
 }
 
 const apiExemplar = new Api(apiData);

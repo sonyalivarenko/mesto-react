@@ -6,7 +6,7 @@ export default function PopupWithForm(props) {
         <div className="popup__container">
           <button className="popup__close" type="button" onClick={props.onClose}></button>
           <h2 className="popup__title">{props.title}</h2>
-          <form className="popup__form" name={props.name} novalidate>
+          <form className="popup__form" name={props.name} novalidate onSubmit={props.onSubmit}>
             <fieldset className="popup__data">
               {props.children}
               <button className="popup__button" type="submit">{props.buttonText}</button>
