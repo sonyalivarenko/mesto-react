@@ -10,12 +10,11 @@ export default function AddPlacePopup(props) {
     setTitle(e.target.value);
   }
 
-  
   function handleChangeLink(e) {
     setLink(e.target.value);
   }
 
- useEffect(() => {
+  useEffect(() => {
     setTitle('');
     setLink('');
   }, [props.isOpen]);

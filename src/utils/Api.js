@@ -11,7 +11,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`); 
     }
     return res.json();
-}
+  }
 
   // загрузка информации о пользователе с сервера
   getProfileInfo() {
@@ -79,7 +79,7 @@ class Api {
   }
 
   //удаление карточки с сервера
- deleteCard(cardId) {
+  deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers,
@@ -90,7 +90,7 @@ class Api {
   }
 
   // отправка лайка на сервер
-   _likeCard(cardId) {
+  _likeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: this._headers
@@ -126,15 +126,15 @@ class Api {
   }
 
 // изменение статуса "лайка" карточки
-changeLikeCardStatus(cardId, isNotLiked) {
-  if (isNotLiked) {
-    return this._likeCard(cardId);
+  changeLikeCardStatus(cardId, isNotLiked) {
+    if (isNotLiked) {
+      return this._likeCard(cardId);
+    }
+    else {
+      return this._deleteLike(cardId);
+    }
   }
-  else {
-    return this._deleteLike(cardId);
   }
-}
-}
 
 const apiExemplar = new Api(apiData);
 

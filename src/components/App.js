@@ -19,9 +19,9 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
 
   const [currentUser, setCurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([])
+  const [cards, setCards] = React.useState([]);
 
- React.useEffect(() => {
+  React.useEffect(() => {
     apiExemplar.getProfileInfo()
     .then((res) => {
       setCurrentUser(res)
@@ -37,7 +37,7 @@ function App() {
     .catch((err) => {
       console.log(err); 
     }); 
-  }, []) 
+  }, [])
   
   function handleCardLike(card) {
     const isLiked = card.likes.some(user => user._id === currentUser._id);
