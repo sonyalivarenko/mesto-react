@@ -9,6 +9,7 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import DeletePlacePopup from './DeletePlacePopup'
 
 function App() {
   
@@ -16,10 +17,12 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+  const [isDeleteImagePopupOpen, setIsDeleteImagePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [card, setCard]  = React.useState({});
 
   React.useEffect(() => {
     apiExemplar.getProfileInfo()
@@ -43,7 +46,7 @@ function App() {
     const isLiked = card.likes.some(user => user._id === currentUser._id);
     apiExemplar.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-          setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
+        setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
       })
       .catch((err) => {
         console.log(err); 
@@ -53,7 +56,8 @@ function App() {
   function handleCardDelete(card) {
     apiExemplar.deleteCard(card._id)
       .then(() => {
-          setCards((cards) => cards.filter((c) => c._id !== card._id ));
+        setCards((cards) => cards.filter((c) => c._id !== card._id ));
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err); 
@@ -63,8 +67,8 @@ function App() {
   function handleUpdateUser({name, about}) {
     apiExemplar.setProfileInfo({name, about})
     .then((res) => {
-        setCurrentUser(res);
-        closeAllPopups();
+      setCurrentUser(res);
+      closeAllPopups();
     })
     .catch((err) => {
       console.log(err); 
@@ -74,8 +78,8 @@ function App() {
   function handleUpdateAvatar({avatar}) {
     apiExemplar.getNewAvatar(avatar)
     .then((res) => {
-        setCurrentUser(res);
-        closeAllPopups();
+      setCurrentUser(res);
+      closeAllPopups();
     })
     .catch((err) => {
       console.log(err); 
@@ -105,11 +109,16 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  function handleDeleteCardClick() {
+    setIsDeleteImagePopupOpen(true);
+  }
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsImagePopupOpen(false);
+    setIsDeleteImagePopupOpen(false);
   }
 
   function handleCardClick(card) {
@@ -124,11 +133,11 @@ function App() {
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
-        <Main onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
+        <Main onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} isDeleteCardPopupOpen={handleDeleteCardClick} setCard={setCard} />
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddCard} />
-        <PopupWithForm name="delete" title="Вы уверены?" buttonText="Да" />
+        <DeletePlacePopup isOpen={isDeleteImagePopupOpen} onClose={closeAllPopups} onDeletePlace={handleCardDelete} card={card} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}  />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} isOpen={isImagePopupOpen} />
       </CurrentUserContext.Provider>

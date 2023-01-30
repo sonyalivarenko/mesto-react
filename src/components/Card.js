@@ -20,8 +20,9 @@ export default function Card(props) {
   } 
 
   function handleDeleteClick() {
-    props.onCardDelete(props.card);
-  } 
+    props.onCardDeletePopup();
+    props.setCard(props.card);
+  }
 
   return (
     <div className="photo__item">

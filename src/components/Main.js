@@ -23,7 +23,7 @@ export default function Main(props) {
         </section>
         <div className="photo">
           {props.cards.map((card) =>
-            <Card key={card._id} card={card} onCardClick={props.onCardClick} onCardLike={props.onCardLike} onCardDelete={props.onCardDelete} />
+            <Card key={card._id} card={card} onCardClick={props.onCardClick} onCardLike={props.onCardLike} /* onCardDelete={props.onCardDelete} */ onCardDeletePopup={props.isDeleteCardPopupOpen} setCard={props.setCard} />
           )} 
         </div>
     </div>
