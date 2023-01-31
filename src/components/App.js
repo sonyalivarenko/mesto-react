@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import apiExemplar from '../utils/Api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
@@ -23,6 +22,22 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [card, setCard]  = React.useState({});
+  const isOpen = isAddPlacePopupOpen || isDeleteImagePopupOpen || isEditAvatarPopupOpen || isEditProfilePopupOpen || isImagePopupOpen;
+
+  function handleKeyDown (evt) {
+    if (evt.key === 'Escape') {
+      closeAllPopups();
+    }
+  }
+
+  React.useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    else {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isOpen])
 
   React.useEffect(() => {
     apiExemplar.getProfileInfo()
